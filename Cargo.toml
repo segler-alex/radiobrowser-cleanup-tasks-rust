@@ -1,0 +1,7 @@
+[package]
+name = "update-caches-rust"
+version = "0.1.0"
+authors = ["segler-alex <segler_alex@web.de>"]
+
+[dependencies]
+mysql = "*"
