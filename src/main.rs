@@ -22,7 +22,7 @@ fn get_column(pool: &mysql::Pool, column: &str) -> HashMap<String, ItemCounts> {
 
             let item_str: String = row.take_opt(column)
                 .unwrap_or(Ok(String::from("")))
-                .unwrap_or(String::from(""));
+                .unwrap_or(String::from("")).to_lowercase();
             let station_ok: bool = row.take_opt("LastCheckOK")
                 .unwrap_or(Ok(false))
                 .unwrap_or(false);
