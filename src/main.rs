@@ -171,9 +171,9 @@ fn main() {
         let pool = mysql::Pool::new(database_url.clone());
         match pool {
             Ok(pool) => {
-                /*let list = get_column(&pool, "Language");
+                let list = get_column(&pool, "Language");
                 println!("Languages: {}", list.len());
-                save_cache(&pool, "LanguageCache", "LanguageName", list);*/
+                save_cache(&pool, "LanguageCache", "LanguageName", list);
 
                 let list = get_column(&pool, "Tags");
                 println!("Tags: {}", list.len());
