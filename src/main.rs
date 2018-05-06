@@ -1,5 +1,4 @@
 extern crate mysql;
-extern crate threadpool;
 
 use std::env;
 use std::collections::HashMap;
