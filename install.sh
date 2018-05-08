@@ -3,7 +3,7 @@ cargo build --release
 sudo mkdir -p /usr/local/bin
 
 NAME="update-caches"
-sudo cp target/release/radiobrowser-cleanup-rust "/usr/local/bin/${NAME}.bin"
+sudo cp target/release/update-caches-rust "/usr/local/bin/${NAME}.bin"
 sudo cp "init/${NAME}.service" /etc/systemd/system
 
 cat <<EOF | sudo tee "/usr/local/bin/${NAME}"
@@ -28,8 +28,8 @@ EOF
 fi
 
 sudo chmod ugo+x "/usr/local/bin/${NAME}"
-sudo groupadd --system streamcheck
-sudo useradd --system --no-create-home --gid streamcheck streamcheck
+sudo groupadd --system radiobrowser
+sudo useradd --system --no-create-home --gid radiobrowser radiobrowser
 
 sudo systemctl daemon-reload
 
