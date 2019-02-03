@@ -4,6 +4,7 @@ use std::env;
 use std::collections::HashMap;
 use std::thread;
 use std::time::Duration;
+use std::cmp;
 
 #[derive(Debug)]
 struct ItemCounts {
@@ -11,7 +12,7 @@ struct ItemCounts {
     working: u32,
 }
 
-fn get_column(pool: &mysql::Pool, column: &str) -> HashMap<String, ItemCounts> {
+fn get_column(pool: &mysql::Pool, column: &str, max_keylen: usize) -> HashMap<String, ItemCounts> {
     let mut items: HashMap<String, ItemCounts> = HashMap::new();
 
     let query = format!("SELECT {}, LastCheckOK FROM Station", column);
@@ -29,7 +30,9 @@ fn get_column(pool: &mysql::Pool, column: &str) -> HashMap<String, ItemCounts> {
 
             let x = item_str.split(',');
             for item in x {
-                let item_trimmed = String::from(item.trim());
+                let item_1 = item.trim();
+                let item_2 = &item_1[0..cmp::min(max_keylen,item_1.len())];
+                let item_trimmed = String::from(item_2);
                 if item_trimmed != "" {
                     let entry = items
                         .entry(item_trimmed)
@@ -171,11 +174,11 @@ fn main() {
         let pool = mysql::Pool::new(database_url.clone());
         match pool {
             Ok(pool) => {
-                let list = get_column(&pool, "Language");
+                let list = get_column(&pool, "Language", 100);
                 println!("Languages: {}", list.len());
                 save_cache(&pool, "LanguageCache", "LanguageName", list);
 
-                let list = get_column(&pool, "Tags");
+                let list = get_column(&pool, "Tags", 100);
                 println!("Tags: {}", list.len());
                 save_cache(&pool, "TagCache", "TagName", list);
             }
